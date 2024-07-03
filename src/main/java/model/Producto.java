@@ -24,4 +24,41 @@ public class Producto {
 	private String estado;
 	@Column(name = "DESCRIPCL3")
 	private String descripcion;
+	
+	public Integer getIdProducto() {
+		return idProducto;
+	}
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
+	}
+	public String getNomProd() {
+		return nomProd;
+	}
+	public void setNomProd(String nomProd) {
+		this.nomProd = nomProd;
+	}
+	public Double getPreVent() {
+		return preVent;
+	}
+	public void setPreVent(Double preVent) {
+		this.preVent = preVent;
+	}
+	public Double getPreComp() {
+		return preComp;
+	}
+	public void setPreComp(Double preComp) {
+		this.preComp = preComp;
+	}
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 }
