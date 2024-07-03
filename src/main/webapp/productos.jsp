@@ -12,6 +12,17 @@
     
     List<Producto> productos = (List<Producto>) request.getAttribute("productos");
     if(productos == null) productos = productoDao.listarProductos();
+    
+    Producto producto = (Producto) request.getAttribute("producto");
+    if(producto == null) {
+    	producto = new Producto();
+        producto.setIdProducto(0);
+        producto.setNomProd("");
+        producto.setPreComp(0.0);
+        producto.setPreVent(0.0);
+        producto.setDescripcion("");
+        producto.setEstado("Vigente");
+    }
 %>
 <html>
 <head>
@@ -24,18 +35,18 @@
         <h3 class="text-center fw-bold">Registrar Producto</h3>
         <hr>
         <form action="ProductoController" method="post">
-            <input type="hidden" name="idProd" value="0">
+            <input type="hidden" name="idProd" value="<%=producto.getIdProducto()%>">
             <input type="hidden" name="accion" value="<%=accion%>">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="txtNomProd" name="nomProd" placeholder="Nombre" autocomplete="off" required>
+                <input type="text" class="form-control" id="txtNomProd" name="nomProd" placeholder="Nombre" autocomplete="off" required value="<%=producto.getNomProd()%>">
                 <label for="txtNomProd">Nombre</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" step="0.01" class="form-control" id="txtPreComp" name="preComp" placeholder="Precio Compra" required min="0.01">
+                <input type="number" step="0.01" class="form-control" id="txtPreComp" name="preComp" placeholder="Precio Compra" required min="0.01"  value="<%=producto.getPreComp()%>">
                 <label for="txtPreComp">Precio de Compra</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="txtPreVent" name="preVent" placeholder="Precio Venta" required min="0.01">
+                <input type="number" step="0.01" class="form-control" id="txtPreVent" name="preVent" placeholder="Precio Venta" required min="0.01"  value="<%=producto.getPreVent()%>">
                 <label for="txtPreVent">Precio de Venta</label>
             </div>
             <div class="form-floating mb-3">
@@ -46,7 +57,7 @@
                 <label for="cboEstado">Estado</label>
             </div>
             <div class="form-floating mb-3">
-                <textarea class="form-control" style="height: 100px" id="txtDescripcion" name="descripcion" required></textarea>
+                <textarea class="form-control" style="height: 100px" id="txtDescripcion" name="descripcion" required><%=producto.getDescripcion() %></textarea>
                 <label for="txtDescripcion">Descripción</label>
             </div>
             <div class="text-center">
