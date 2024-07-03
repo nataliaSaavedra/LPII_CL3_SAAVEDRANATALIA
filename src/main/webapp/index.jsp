@@ -15,7 +15,7 @@
     <div class="p-5 container col-5 border border-1 rounded bg-white">
         <h1 class="text-center">Ingresar al sistema</h1>
         <hr>
-        <form action="UsuarioController">
+        <form action="UsuarioController" method="post">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="txtUsername" name="username" placeholder="Usuario" autocomplete="off" required>
                 <label for="txtUsername">Usuario</label>

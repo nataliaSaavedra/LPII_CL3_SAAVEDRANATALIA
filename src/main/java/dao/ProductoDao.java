@@ -73,4 +73,15 @@ public class ProductoDao implements IProductoDao {
 		return productos;
 	}
 
+	@Override
+	public void actualizar(Producto producto) {
+		EntityManagerFactory fabr = Persistence.createEntityManagerFactory("PERSISTENCE");
+		EntityManager em = fabr.createEntityManager();
+		em.getTransaction().begin();
+		em.merge(producto);
+		em.getTransaction().commit();
+		em.close();
+		fabr.close();
+	}
+
 }

@@ -35,7 +35,7 @@ public class ProductoController extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
 		switch(accion) {
-		case "registrar":
+		case "registrar": case "actualizar2":
 			registrarProducto(request, response);
 			break;
 		case "actualizar":
@@ -55,7 +55,7 @@ public class ProductoController extends HttpServlet {
 		String accion = request.getParameter("accion");
 		switch(accion) {
 		case "actualizar":
-			actualizarProducto(request, response);
+			actualizarProducto(request, response, idProd);
 			break;
 		case "eliminar":
 			eliminarProducto(request, response, producto);
@@ -63,8 +63,11 @@ public class ProductoController extends HttpServlet {
 		}
 	}
 	
-	private void actualizarProducto(HttpServletRequest request, HttpServletResponse response) {
-		
+	private void actualizarProducto(HttpServletRequest request, HttpServletResponse response, Integer idProd) {
+		Producto producto = productoDao.buscarPorId(idProd);
+		request.setAttribute("producto", producto);
+		request.setAttribute("accion", "actualizar2");
+		goToProductos(request, response);
 	}
 	
 	private void eliminarProducto(HttpServletRequest request, HttpServletResponse response, Producto producto) {
@@ -73,6 +76,13 @@ public class ProductoController extends HttpServlet {
 	}
 	
 	private void registrarProducto(HttpServletRequest request, HttpServletResponse response) {
+		String accion = request.getParameter("accion");
+		Integer idProd = 0;
+		if(accion.equals("actualizar2"))
+			idProd = Integer.parseInt(request.getParameter("idProd"));
+		
+		System.out.println(idProd);
+		
 		String nomProd = request.getParameter("nomProd");
 		Double preComp = Double.parseDouble(request.getParameter("preComp"));
 		Double preVent = Double.parseDouble(request.getParameter("preVent"));
@@ -80,12 +90,16 @@ public class ProductoController extends HttpServlet {
 		String descripcion = request.getParameter("descripcion");
 		
 		Producto producto = new Producto();
+		producto.setIdProducto(idProd);
 		producto.setNomProd(nomProd);
 		producto.setPreComp(preComp);
 		producto.setPreVent(preVent);
 		producto.setEstado(estado);
 		producto.setDescripcion(descripcion);
-		productoDao.registrar(producto);
+		if(accion.equals("actualizar2"))
+			productoDao.actualizar(producto);
+		else
+			productoDao.registrar(producto);
 		goToProductos(request, response);
 	}
 	
