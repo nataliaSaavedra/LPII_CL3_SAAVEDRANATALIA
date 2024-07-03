@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -37,7 +38,38 @@ public class ProductoController extends HttpServlet {
 		case "registrar":
 			registrarProducto(request, response);
 			break;
+		case "actualizar":
+			buscarProducto(request, response);
+			break;
+		case "eliminar":
+			buscarProducto(request, response);
+			break;
+		default:
+			goToProductos(request, response);
 		}
+	}
+	
+	private void buscarProducto(HttpServletRequest request, HttpServletResponse response) {
+		Integer idProd = Integer.parseInt(request.getParameter("idProd"));
+		Producto producto = productoDao.buscarPorId(idProd);
+		String accion = request.getParameter("accion");
+		switch(accion) {
+		case "actualizar":
+			actualizarProducto(request, response);
+			break;
+		case "eliminar":
+			eliminarProducto(request, response, producto);
+			break;
+		}
+	}
+	
+	private void actualizarProducto(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
+	
+	private void eliminarProducto(HttpServletRequest request, HttpServletResponse response, Producto producto) {
+		productoDao.eliminar(producto);
+		goToProductos(request, response);
 	}
 	
 	private void registrarProducto(HttpServletRequest request, HttpServletResponse response) {
@@ -53,17 +85,14 @@ public class ProductoController extends HttpServlet {
 		producto.setPreVent(preVent);
 		producto.setEstado(estado);
 		producto.setDescripcion(descripcion);
-		System.out.println(nomProd);
-		System.out.println(preComp);
-		System.out.println(preVent);
-		System.out.println(estado);
-		System.out.println(descripcion);
 		productoDao.registrar(producto);
 		goToProductos(request, response);
 	}
 	
 	private void goToProductos(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			List<Producto> productos = productoDao.listarProductos();
+			request.setAttribute("productos", productos);
 			RequestDispatcher rd = request.getRequestDispatcher("productos.jsp");
 			rd.forward(request, response);
 		} catch(Exception ex) {

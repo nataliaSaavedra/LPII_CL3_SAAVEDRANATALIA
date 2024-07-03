@@ -1,9 +1,17 @@
+<%@page import="dao.ProductoDao"%>
+<%@page import="model.Producto"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%
+    ProductoDao productoDao = new ProductoDao();
+
     String accion = (String) request.getAttribute("accion");
     if(accion == null) accion = "registrar";
+    
+    List<Producto> productos = (List<Producto>) request.getAttribute("productos");
+    if(productos == null) productos = productoDao.listarProductos();
 %>
 <html>
 <head>
@@ -58,11 +66,31 @@
                     <th class="text-center">Precio de Compra</th>
                     <th class="text-center">Estado</th>
                     <th class="text-center">Descripción</th>
-                    <th colspan="2">Acciones</th>
+                    <th class="text-center" colspan="2">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                
+                <%
+                    if(productos != null)
+                        for(Producto p: productos) {
+                %>
+                <tr>
+                    <td class="text-center"><%=p.getIdProducto() %></td>
+                    <td class="text-center"><%=p.getNomProd() %></td>
+                    <td class="text-center"><%=p.getPreVent() %></td>
+                    <td class="text-center"><%=p.getPreComp() %></td>
+                    <td class="text-center"><%=p.getEstado() %></td>
+                    <td class="text-center"><%=p.getDescripcion() %></td>
+                    <td class="text-center">
+                        <a class="btn btn-danger" href="ProductoController?accion=eliminar&idProd=<%=p.getIdProducto()%>">Eliminar</a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-primary" href="ProductoController?accion=actualizar&idProd=<%=p.getIdProducto()%>">Actualizar</a>
+                    </td>
+                </tr>
+                <%
+                        }
+                %>
             </tbody>
         </table>
     </div>
